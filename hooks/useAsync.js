@@ -5,7 +5,7 @@ import {
   useRef,
 } from 'react';
 // import usePrevious from './usePrevious';
-import useSecureAction from './useSecureAction';
+import useSafeAction from './useSafeAction';
 import useImmer from './useImmer';
 
 /**
@@ -77,8 +77,8 @@ const useAsync = (promiseFn, options) => {
   const [currentTask, setCurrentTask] = useImmer(getDefaultState(initDataRef.current));
   const [tasks, setTasks] = useImmer(nil());
   // const prevData = usePrevious(data);
-  const secureAction = useSecureAction();
-  
+  const secureAction = useSafeAction();
+
   // tasks 引用
   const tasksRef = useRef(tasks);
   tasksRef.current = tasks;

@@ -5,7 +5,7 @@ import {
 } from 'react';
 
 // Action In Mounted
-const useSecureAction = () => {
+const useSafeAction = () => {
   const mountedRef = useRef(true);
   useEffect(() => () => {
     mountedRef.current = false;
@@ -15,4 +15,4 @@ const useSecureAction = () => {
   }, []);
 };
 
-export default useSecureAction;
+export default useSafeAction;

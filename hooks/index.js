@@ -8,7 +8,7 @@ import useMount from './useMount';
 import useOn from './useOn';
 import usePersistFn from './usePersistFn';
 import usePrevious from './usePrevious';
-import useSecureAction from './useSecureAction';
+import useSafeAction from './useSafeAction';
 import useThrottle from './useThrottle';
 import useUnmount from './useUnmount';
 import useUpdate from './useUpdate';
@@ -24,7 +24,7 @@ export {
   useOn,
   usePersistFn,
   usePrevious,
-  useSecureAction,
+  useSafeAction,
   useThrottle,
   useUnmount,
   useUpdate,
