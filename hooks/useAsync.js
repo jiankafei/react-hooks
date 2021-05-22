@@ -63,8 +63,8 @@ const defaultOptions = {
 
 const useAsync = (promiseFn, options) => {
   options = Object.assign(nil(), defaultOptions, options);
-  const promiseRef = useRef(promiseFn);
-  promiseRef.current = promiseFn;
+  const promiseFnRef = useRef(promiseFn);
+  promiseFnRef.current = promiseFn;
   const doneRef = useRef(options.done);
   doneRef.current = options.done;
   const failRef = useRef(options.fail);
@@ -138,7 +138,7 @@ const useAsync = (promiseFn, options) => {
         draft.pending = true;
       }, taskKey);
 
-      const res = await promiseRef.current(params);
+      const res = await promiseFnRef.current(params);
       secureAction(() => {
         if (res) {
           modify((draft) => {

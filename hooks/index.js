@@ -1,4 +1,5 @@
 import useAsync from './useAsync';
+import useClickAway from './useClickAway';
 import useConstant from './useConstant';
 import useDebounce from './useDebounce';
 import useImmer from './useImmer';
@@ -15,6 +16,7 @@ import useUpdate from './useUpdate';
 
 export {
   useAsync,
+  useClickAway,
   useConstant,
   useDebounce,
   useImmer,
