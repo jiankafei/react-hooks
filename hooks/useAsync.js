@@ -77,7 +77,7 @@ const useAsync = (promiseFn, options) => {
   const [currentTask, setCurrentTask] = useImmer(getDefaultState(initDataRef.current));
   const [tasks, setTasks] = useImmer(nil());
   // const prevData = usePrevious(data);
-  const secureAction = useSafeAction();
+  const safeAction = useSafeAction();
 
   // tasks 引用
   const tasksRef = useRef(tasks);
@@ -128,8 +128,8 @@ const useAsync = (promiseFn, options) => {
   const run = useCallback(async (params, taskKey) => {
     const delayP = options.delay ? delayPromise(options.delay) : null;
 
-    // const controller = new AbortController();
-    // const signal = controller.signal;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     try {
       if (options.reset) reset(taskKey);
@@ -138,8 +138,8 @@ const useAsync = (promiseFn, options) => {
         draft.pending = true;
       }, taskKey);
 
-      const res = await promiseFnRef.current(params);
-      secureAction(() => {
+      const res = await promiseFnRef.current(params, signal);
+      safeAction(() => {
         if (res) {
           modify((draft) => {
             draft.data = (res.data ?? initDataRef.current ?? nil());
@@ -150,7 +150,7 @@ const useAsync = (promiseFn, options) => {
       });
     } catch (error) {
       console.warn(error);
-      secureAction(() => {
+      safeAction(() => {
         modify((draft) => {
           draft.error = error;
         }, taskKey);
@@ -160,7 +160,7 @@ const useAsync = (promiseFn, options) => {
       if (options.delay) {
         try {
           await delayP;
-          secureAction(() => {
+          safeAction(() => {
             modify((draft) => {
               draft.pending = false;
             }, taskKey);
@@ -170,7 +170,7 @@ const useAsync = (promiseFn, options) => {
           console.warn(error);
         }
       } else {
-        secureAction(() => {
+        safeAction(() => {
           modify((draft) => {
             draft.pending = false;
           }, taskKey);
@@ -178,9 +178,8 @@ const useAsync = (promiseFn, options) => {
         });
       }
     }
-  }, [options.delay, options.reset, secureAction, modify, reset]);
-
-  // const cancel = useCallback(() => controller.abort(), []);
+    return controller.abort;
+  }, [options.delay, options.reset, safeAction, modify, reset]);
 
   // 缓存
   // useEffect(() => {
